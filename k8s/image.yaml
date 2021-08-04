@@ -1,0 +1,49 @@
+apiVersion: kpack.io/v1alpha1
+kind: Image
+metadata:
+  name: private-image-repo
+spec:
+  tag: registry.core.cna-demo.ga/samples/private-image-repo
+  builder:
+    kind: ClusterBuilder
+    name: default
+  source:
+    git:
+      url: https://github.com/yogendra/api-demo
+      revision: 0eccc6c2f01d9f055087ebbf03526ed0623e014a
+  build:
+    bindings:
+    - name: settings
+      secretRef:
+        name: settings-xml
+      metadataRef:
+        name: settings-binding-metadata
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: settings-xml
+type: Opaque
+stringData:
+  settings.xml: |
+    <?xml version="1.0" encoding="UTF-8"?>
+    <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" 
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemalocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+        <mirrors>
+          <mirror>
+            <id>repository-core-cna-demo-ga</id>
+            <name>Repository / Core / CNA Demo</name>
+            <url>https://repository.core.cna-demo.ga/repository/maven-public/</url>
+            <mirrorOf>*</mirrorOf>
+          </mirror>
+        </mirrors>
+    </settings>
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: settings-binding-metadata
+data:
+  kind: maven
+  provider: sample
