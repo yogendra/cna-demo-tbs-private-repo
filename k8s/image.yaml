@@ -9,8 +9,8 @@ spec:
     name: default
   source:
     git:
-      url: https://github.com/yogendra/api-demo
-      revision: 0eccc6c2f01d9f055087ebbf03526ed0623e014a
+      url: https://github.com/yogendra/cna-demo-tbs-private-repo.git
+      revision: main
   build:
     bindings:
     - name: settings
